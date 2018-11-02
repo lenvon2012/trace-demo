@@ -1,0 +1,11 @@
+repositories {
+}
+
+dependencies {
+	compile project(':demo-model')
+	compile project(':demo-util')
+
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.cloud:spring-cloud-starter-sleuth')
+	compile('org.springframework.cloud:spring-cloud-sleuth-zipkin')
+}

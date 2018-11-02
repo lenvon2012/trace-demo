@@ -1,0 +1,77 @@
+spring:
+    application:
+        name: demo-service
+    profiles: 
+        active: dev
+#   Percentage of logs export to zipkin server
+    sleuth:
+        stream:
+            enabled: false
+        sampler:
+            percentage: 1
+    zipkin:
+#       For enabling Zipkin Client for this Microservice
+        enabled: true 
+#       Server Url
+        baseUrl: http://9.123.149.195:9411
+        sender: 
+          type: web
+        locator:
+            discovery:
+                enabled: false
+    redis:
+        topic: ${REDIS_TOPIC:pubsub:jsa-channel}
+        host: ${REDIS_HOST:9.123.149.195}
+        port: ${REDIS_PORT:6379}
+        password: ${REDIS_PASSWD:passw0rd}
+        pool: 
+            max-active: ${REDIS_MAX_ACTIVE:8}
+            max-idle: ${REDIS_MAX_IDLE:8}
+            max-wait: ${REDIS_MAX_WAIT:-1}
+            min-idle: ${REDIS_MIN_IDLE:0}
+            min-evictable-idle: ${REDIS_MIN_EVICTABLE_IDLE:300000}
+        timeout: ${REDIS_TIME_OUT:0}
+#   Kafka Configuration using spring-cloud-stream
+    cloud:
+        stream: 
+            default:
+                contentType: application/json
+            bindings:
+                output:
+                    destination: test-topic-1
+            kafka:
+                binder:
+                    # zookeeper ip
+                    zkNodes: 9.123.149.195:12181,9.123.149.195:22181,9.123.149.195:32181
+                    # kafka broker ip
+                    brokers: 9.123.149.195:19092,9.123.149.195:29092,9.123.149.195:39092
+                    # Custom headers for sleuth for normal kafka communication no need to add
+                    headers:
+                      - X-B3-TraceId
+                      - X-B3-SpanId
+                      - X-B3-Sampled
+                      - X-B3-ParentSpanId
+                      - X-Span-Name
+                      - X-Span-Export
+                      - X-Process-Id
+                      - spanId
+                      - spanSampled
+                      - spanProcessId
+                      - spanParentSpanId
+                      - spanTraceId
+                      - spanName
+                      - messageSent
+
+# Server Information
+server:
+    port: 8090
+    
+docs:
+  service:
+    name: demo-service
+    
+logging:
+  config: classpath:logback-spring.xml
+  level:
+        root: INFO
+

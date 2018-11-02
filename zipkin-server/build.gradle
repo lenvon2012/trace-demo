@@ -1,0 +1,11 @@
+repositories {
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter')
+	compile('org.springframework.boot:spring-boot-starter-jdbc')
+	compile('io.zipkin.java:zipkin-server')
+	runtime('io.zipkin.java:zipkin-autoconfigure-ui')
+	compile('io.zipkin.java:zipkin-autoconfigure-storage-mysql')
+	compile('mysql:mysql-connector-java')
+}

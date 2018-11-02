@@ -1,0 +1,40 @@
+server:
+  port: 9411
+
+docs:
+  service:
+    name: demo-zipkin
+
+#logging.config: classpath:log4j2.properties
+#logging: 
+#  config: classpath:logback-spring.xml
+#logging.config: classpath:logback-spring.xml
+
+logging: 
+  config: classpath:logback-spring.xml
+
+# SPRING PROFILES
+spring:
+  application:
+    name: demo-zipkin-server
+  # HTTP ENCODING
+  http:
+    encoding.charset: UTF-8
+    encoding.enable: true
+    encoding.force: true
+  datasource: 
+    schema: classpath:/mysql.sql
+    url: jdbc:mysql://9.123.149.195:3306/demo
+    username: root
+    password: password
+    # Switch this on to create the schema on startup:
+    initialize: true
+    continueOnError: true
+    
+zipkin:
+  storage:
+    type: mysql
+    
+spring.profiles.active: dev
+
+#logging.file: /${server.display-name}/logs/${server.display-name}

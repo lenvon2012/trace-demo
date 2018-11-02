@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+	<springProperty scope="context" name="appName" source="spring.application.name"/>
+	<springProperty scope="context" name="serviceName" source="docs.service.name"/>
+
+	<property name="logTime" value="yy.MM.dd_HH.mm.ss" />
+	
+	<property name="fileSize" value="10MB" />
+
+    <!-- Example for logging into the build folder of your project -->
+    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-log}}}/${appName}"/>
+
+    <property name="LOG_PATTERN" value="[%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){yellow}] [${HOSTNAME}] [${serviceName},%X{X-B3-TraceId:-................},%X{X-B3-SpanId:-................},%X{X-Span-Export:-}] %-20.-20logger{0}:%-4line [%clr(%5p)] %m%n"/>
+
+    <springProfile name="dev,fast">
+        <appender name="ROLLING-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	        <file>${LOG_FILE}_${HOSTNAME}.log</file>
+	        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	            <fileNamePattern>${LOG_FILE}_${HOSTNAME}_%d{${logTime}}%i.log</fileNamePattern>
+				<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	                <maxFileSize>${fileSize}</maxFileSize>
+	            </timeBasedFileNamingAndTriggeringPolicy>
+	        </rollingPolicy>
+	        <append>true</append>
+	        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>${LOG_PATTERN}</pattern>
+	            <charset>UTF-8</charset>
+	        </encoder>
+			<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+	            <level>DEBUG</level>
+	        </filter>
+	    </appender>
+        <appender name="ROLLING-FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	        <file>${LOG_FILE}-error_${HOSTNAME}.log</file>
+	        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	            <fileNamePattern>${LOG_FILE}-error_${HOSTNAME}_%d{${logTime}}%i.log</fileNamePattern>
+				<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	                <maxFileSize>${fileSize}</maxFileSize>
+	            </timeBasedFileNamingAndTriggeringPolicy>
+	        </rollingPolicy>
+	        <append>true</append>
+	        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>${LOG_PATTERN}</pattern>
+	            <charset>UTF-8</charset>
+	        </encoder>
+	        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+	            <level>ERROR</level>
+	            <onMatch>ACCEPT</onMatch>
+	            <onMismatch>DENY</onMismatch>
+	        </filter>
+	    </appender>
+	    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+	        <encoder>
+	            <pattern>${LOG_PATTERN}</pattern>
+	            <charset>UTF-8</charset>
+	        </encoder>
+	        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+	            <level>DEBUG</level>
+	        </filter>
+	    </appender>
+	    <logger name="com.demo" level="DEBUG" />
+	    <logger name="org.springframework" level="WARN" />
+    	<logger name="org.hibernate" level="WARN" />
+    	<logger name="com.mongodb" level="WARN" />
+    	<logger name="org.mongodb.driver.cluster" level="WARN" />
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="ROLLING-FILE"/>
+        	<appender-ref ref="ROLLING-FILE-ERROR" />
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <appender name="ROLLING-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	        <file>${LOG_FILE}_${HOSTNAME}.log</file>
+	        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	            <fileNamePattern>${LOG_FILE}_${HOSTNAME}_%d{${logTime}}%i.log</fileNamePattern>
+				<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	                <maxFileSize>${fileSize}</maxFileSize>
+	            </timeBasedFileNamingAndTriggeringPolicy>
+	        </rollingPolicy>
+	        <append>true</append>
+	        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>${LOG_PATTERN}</pattern>
+	            <charset>UTF-8</charset>
+	        </encoder>
+	        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+	            <level>INFO</level>
+	        </filter>
+	    </appender>
+        <appender name="ROLLING-FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	        <file>${LOG_FILE}-error_${HOSTNAME}.log</file>
+	        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	            <fileNamePattern>${LOG_FILE}-error_${HOSTNAME}_%d{${logTime}}%i.log</fileNamePattern>
+				<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	                <maxFileSize>${fileSize}</maxFileSize>
+	            </timeBasedFileNamingAndTriggeringPolicy>
+	        </rollingPolicy>
+	        <append>true</append>
+	        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	            <pattern>${LOG_PATTERN}</pattern>
+	            <charset>UTF-8</charset>
+	        </encoder>
+	        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+	            <level>ERROR</level>
+	            <onMatch>ACCEPT</onMatch>
+	            <onMismatch>DENY</onMismatch>
+	        </filter>
+	    </appender>
+		<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+	        <encoder>
+	            <pattern>${LOG_PATTERN}</pattern>
+	            <charset>UTF-8</charset>
+	        </encoder>
+	        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+	            <level>DEBUG</level>
+	        </filter>
+	    </appender>
+
+		<logger name="com.demo" level="INFO" />
+
+        <root level="ERROR">
+            <appender-ref ref="ROLLING-FILE"/>
+            <appender-ref ref="ROLLING-FILE-ERROR"/>
+        </root>
+    </springProfile>
+
+</configuration>

@@ -1,0 +1,31 @@
+#logging.config: classpath:logback-spring.xml
+#logging: 
+#  config: 
+#    classpath: logback-spring.xml
+
+# SPRING PROFILES
+spring:
+  application:
+    name: eureka-customer
+  # HTTP ENCODING
+  http:
+      encoding.charset: UTF-8
+      encoding.enable: true
+      encoding.force: true
+  sleuth:  
+    sampler:  
+      percentage: 1.0  
+  zipkin:  
+    enabled: true  
+    sender:
+      type: web
+
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone:  http://${eureka.instance.hostname}:9000/eureka/

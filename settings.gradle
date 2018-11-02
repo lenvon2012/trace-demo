@@ -1,0 +1,10 @@
+
+rootProject.name = PROJECT_ARTIFACT_ID
+
+include ':demo-web',
+		':demo-model',
+		':demo-util',
+		':demo-service',
+		':demo-message',
+		':demo-front',
+		':zipkin-server'

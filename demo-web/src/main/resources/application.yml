@@ -1,0 +1,29 @@
+spring:
+    application:
+        name: demo-web
+    profiles: 
+        active: dev
+    sleuth:
+        sampler:
+            percentage: 1
+#   Percentage of logs export to zipkin server
+    zipkin:
+#       For enabling Zipkin Client for this Microservice
+        enabled: true 
+#       Server Url
+        baseUrl: http://9.123.149.195:9411
+                
+# Server Information
+server:
+    port: 8080
+    
+docs:
+  service:
+    name: demo-web
+    
+logging:
+  config: classpath:logback-spring.xml
+  level:
+        root: INFO
+
+
